@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>php mbtiles server</title>
+    <meta charset="utf-8">
+    <meta name="author" content="">
+	
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+
+</head>
+
+<body>
+    <style>
+
+		body {
+		  padding: 0;
+		  margin: 0;
+		}
+		html, body, #map {
+		  height: 100%;
+		  width: 100%;
+		}		
+
+    </style>
+
+    <div id="map"></div>
+    <script>
+	
+        var map = L.map('map', {
+            center: [50.0064, 36.2351],
+            zoom: 4
+        })
+ 				
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+	
+
+        var layer = new L.tileLayer('mbtiles.php?db=tiles/geography.mbtiles&z={z}&x={x}&y={y}', {
+            tms: true
+        }).addTo(map);       
+        
+    </script>
+</body>
+
+</html>
