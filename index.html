@@ -2,12 +2,12 @@
 <html>
 
 <head>
-    <title>php mbtiles server</title>
+    <title>Leaflet mbtiles</title>
     <meta charset="utf-8">
     <meta name="author" content="">
 	
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 
 </head>
 
@@ -27,21 +27,38 @@
 
     <div id="map"></div>
     <script>
-	
-        var map = L.map('map', {
-            center: [50.0064, 36.2351],
-            zoom: 4
-        })
- 				
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-	
 
-        var layer = new L.tileLayer('mbtiles.php?db=tiles/geography.mbtiles&z={z}&x={x}&y={y}', {
+        var layerOSM = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        });
+
+        var survey_dtm = new L.tileLayer('mbtiles.php?db=tiles/survey_dtm.mbtiles&z={z}&x={x}&y={y}', {
             tms: true
-        }).addTo(map);       
+        });  
         
+        var survey_dsm = new L.tileLayer('mbtiles.php?db=tiles/survey_dsm.mbtiles&z={z}&x={x}&y={y}', {
+            tms: true
+        });  
+                  
+        var map = L.map('map', {
+            center: [50.04934, 35.19702],
+            zoom: 17,
+            layers: [layerOSM, survey_dtm]
+        })
+          
+        var baseLayers = {
+            "OpenStreetMap": layerOSM
+        };
+
+        var overlayLayers = {
+            "DTM": survey_dtm,
+            "DSM": survey_dsm
+        };
+        
+        L.control.layers(baseLayers, overlayLayers, {
+            collapsed: false
+        }).addTo(map);
+
     </script>
 </body>
 
